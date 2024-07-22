@@ -10,13 +10,13 @@ systemctl enable httpd
 
 # Fetch the Availability Zone information using IMDSv2
 TOKEN=`curl -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600"`
-AZ=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/placement/availability-zone`
+PRIVATE_IP=`curl -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4`
 
 # Create the index.html file
 cat > /var/www/html/index.html <<EOF
 <html>
 <head>
-    <title>Instance Availability Zone</title>
+    <title>Private Ip</title>
     <style>
         body {
             background-color: #6495ED; /* Cornflower Blue - a darker shade */
@@ -32,7 +32,7 @@ cat > /var/www/html/index.html <<EOF
     </style>
 </head>
 <body>
-    <div>This instance is located in Availability Zone: $AZ</div>
+    <div>This Private Ip Of the Instance is: $PRIVATE_IP</div>
 </body>
 </html>
 EOF
